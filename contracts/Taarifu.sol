@@ -3,10 +3,10 @@ pragma solidity ^0.8.17;
 /* Things that this contract is going to do  
 *   USE   CelloUsd /ERC20 as a governance token 
 * circumstances of pausing the contract and conditions to unpause it 
-* Token allocation process 
+* Token allocation process -- the users can as well buy 
 *Burning tokens 
-* Token allocation process & incentivizing new members 
-* Voting mechanisms and implementing proof of Personhood 
+* Token allocation process & incentivizing new members -- just buy the damn tokens 
+* Voting mechanisms and implementing proof of Personhood  1`
 */ 
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
@@ -22,6 +22,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 *@dev inheriting contracts from openzeppelin to make our contract even more secure 
 */ 
 
+error Taarifu__PollAlreadyExists(); 
 error Taarifu__TooMuchGas(); 
 contract Taarifu is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable, PausableUpgradeable, ERC20PermitUpgradeable, ERC20VotesUpgradeable {
     /* Immutable Varibles */ 
@@ -33,7 +34,7 @@ uint256 public constant GAS_LIMIT = 1 CelloUsd;
 uint256 public s_yesCount; 
 uint256 public s_noCount; 
 uint256 public s_gasAmount;//simulate estimation on an instance of the poll 
-uint256 public s_transactionCreator; 
+address s_transactionCreator = msg.sender;//assigning the transaction creator to whoever calls our contract  
       /* Other Contract Variables */ 
 //mapping of voter address to their vote 
 mapping(address => bool) public votes; 
@@ -78,10 +79,15 @@ enum VotingTransactionState { Created, Active, Succeeded, Queued, Executed }
 event votedEvent(address indexed voter, bool vote);
 
  //function to create a voting transaction 
-function createVotingTransaction(address s_transactionCreator) public returns(bool){
+function createVotingTransaction(address s_transactionCreator)external public returns(bool){
  //first check for existing transactions within place 
  //now create a transaction by creating an event 
-           
+ event _createVotingTransaction( 
+        //takes in : creator address, array of participants address, tokenStaked by owner, total tokenStaked by participants, poll value or topic, bytes32 of a link containing explained issue  
+        address s_transactionCreator,
+         
+if(VotingTransactionState == VotingTransactionState.Active) {
+    revert Taarifu__PollAlreadyExists();
 } 
 
 //voting function 
