@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 /* Things that this contract is going to do  
+*   USE   CelloUsd /ERC20 as a governance token 
+* circumstances of pausing the contract and conditions to unpause it 
+* Token allocation process 
+*Burning tokens 
+* Token allocation process & incentivizing new members 
+* Voting mechanisms and implementing proof of Personhood 
 */ 
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
@@ -27,6 +33,7 @@ uint256 public constant GAS_LIMIT = 1 CelloUsd;
 uint256 public s_yesCount; 
 uint256 public s_noCount; 
 uint256 public s_gasAmount;//simulate estimation on an instance of the poll 
+uint256 public s_transactionCreator; 
       /* Other Contract Variables */ 
 //mapping of voter address to their vote 
 mapping(address => bool) public votes; 
@@ -40,12 +47,12 @@ constructor() {
        *extend some of the functionality or just change from eth to Cusd  
     */ 
 function initialize() initializer public {
-        __ERC20_init("MyToken", "MTK");
+        __ERC20_init("Taarifu", "TRF");
         __ERC20Burnable_init();
         __ERC20Snapshot_init();
         __AccessControl_init();
         __Pausable_init();
-        __ERC20Permit_init("MyToken");
+        __ERC20Permit_init("Taarifu");
         __ERC20Votes_init();
                                     
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -62,13 +69,20 @@ function initialize() initializer public {
  *Executed -> Poll Occurred, Everything went fine. 
 */ 
 
-enum ContractState { Created, Active, Succeeded, Queued, Executed } 
+enum VotingTransactionState { Created, Active, Succeeded, Queued, Executed } 
     //Utilizing snapshots to keep the status of the smart contract before and after a voting transaction for a proposal has occurred 
 
 /* Events */ 
 *@dev You can change 2nd @param type to say an enum or struct to accomodate several voting options  
 */ 
 event votedEvent(address indexed voter, bool vote);
+
+ //function to create a voting transaction 
+function createVotingTransaction(address s_transactionCreator) public returns(bool){
+ //first check for existing transactions within place 
+ //now create a transaction by creating an event 
+           
+} 
 
 //voting function 
 function vote(bool choice) public {
@@ -97,8 +111,10 @@ if(gasAmount >= GAS_LIMIT) {
 } for(address voter in votes) {
     if(votes[voter]) {
         s_yesCount++; 
+        return s_yesCount;
     else {
         s_noCount++;
+        return s_noCount;
 
 }                   
     } 
@@ -162,8 +178,8 @@ function _burn(address account, uint256 amount)
         super._burn(account, amount);
     }
 //function to get the majority vote 
-function getResults() public pure returns(bool) {
-
+function getResults() public pure returns(uint256) {
+    
 }
 }
 //states Created, Active, Succeeded, Queued, Executed. 
