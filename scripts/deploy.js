@@ -1,0 +1,1 @@
+const hardhat = require("hardhat");
