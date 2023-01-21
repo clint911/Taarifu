@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 /* Things that this contract is going to do  
 *   USE   CelloUsd /ERC20 as a governance token 
+* used own token to backed by CelloUsd as a voting an governance token 
 * circumstances of pausing the contract and conditions to unpause it 
 * Token allocation process -- the users can as well buy 
 *Burning tokens 
@@ -140,6 +141,7 @@ function snapshot() public onlyRole(SNAPSHOT_ROLE) {
 
 //The Contract can be paused in certain circumstances to prevent some shit 
 function pause() public onlyRole(PAUSER_ROLE) {
+    //perform checks to make sure Everything is allright incase of suspicious moves by some actors, pause the contrct to prevent bad changes / votes 
         _pause();
     }
 
