@@ -12,4 +12,4 @@ npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
 # Cello-hackathon-Sc
-Changing project name
+Changing project name to Taarifu: This is the fork of the project Taarifu, Clinton's edition. This repo contains only the smart contract,tests and deploy scripts.
